@@ -39,13 +39,15 @@ report-pdf/
 
 ## 使用方式
 
-这是一个 **OpenClaw Agent Skill**——你不需要手动操作，只需对 Agent 说：
+这是一个 **OpenClaw Agent Skill**，专注于**排版和 PDF 生成**（不含调研/内容生成能力）。
 
-- "帮我做个 XX 的深度研究报告，输出 PDF"
-- "把这篇内容整理成 PDF 报告"
-- "generate a research report on XX"
+当 Agent 已经准备好内容后，会自动调用本 skill 完成排版出稿：
 
-Agent 会自动读取模板、生成 HTML、转 PDF、发给你。
+- "把这篇内容排版成 PDF"
+- "用 report-pdf 模板输出 PDF"
+- "convert this to a styled PDF report"
+
+Agent 读取模板 → 填入内容 → 生成 HTML → 转 PDF → 发给你。
 
 ### 手动使用脚本
 
