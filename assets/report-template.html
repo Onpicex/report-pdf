@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>{{TITLE}}</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --c-primary: #1a1a2e;
+    --c-accent: #c0392b;
+    --c-accent-light: #e74c3c;
+    --c-text: #333;
+    --c-text-light: #666;
+    --c-bg: #fff;
+    --c-bg-light: #f7f7f7;
+    --c-border: #e0e0e0;
+    --c-table-head: #2c3e50;
+    --font: -apple-system, "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+    --font-mono: Menlo, Consolas, Monaco, "Courier New", monospace;
+  }
+  @page { size: A4; margin: 15mm 13mm 13mm 13mm; }
+  @media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+  body { font-family: var(--font); font-size: 10.5pt; line-height: 1.85; color: var(--c-text); background: var(--c-bg); }
+
+  /* === 封面 === */
+  .cover { display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; text-align: center; page-break-after: always; padding: 80px 50px; position: relative; }
+  .cover::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; background: linear-gradient(90deg, var(--c-accent), var(--c-primary)); }
+  .cover-tag { display: inline-block; background: var(--c-primary); color: #fff; font-size: 9pt; letter-spacing: 3px; padding: 6px 18px; margin-bottom: 40px; text-transform: uppercase; }
+  .cover h1 { font-size: 36pt; font-weight: 700; color: var(--c-primary); margin-bottom: 12px; letter-spacing: 2px; }
+  .cover-sub { font-size: 12pt; color: var(--c-text-light); margin-bottom: 50px; }
+  .cover-line { width: 80px; height: 3px; background: var(--c-accent); margin: 0 auto 50px; }
+  .cover-meta { font-size: 9pt; color: #999; line-height: 2.2; }
+  .cover-meta span { display: inline-block; margin: 0 12px; }
+  .cover-footer { position: absolute; bottom: 50px; font-size: 8pt; color: #bbb; }
+
+  /* === 目录 === */
+  .toc-page { page-break-after: always; padding: 60px 0 40px; }
+  .toc-page h2 { font-size: 16pt; color: var(--c-primary); border-left: 4px solid var(--c-accent); padding-left: 14px; margin-bottom: 30px; }
+  .toc-list { list-style: none; padding: 0; }
+  .toc-list li { padding: 8px 0; border-bottom: 1px dotted var(--c-border); font-size: 10pt; color: var(--c-text); display: flex; justify-content: space-between; }
+  .toc-list li.toc-part { font-weight: 700; color: var(--c-primary); border-bottom: none; padding-top: 18px; font-size: 11pt; }
+  .toc-list li.toc-sub { padding-left: 20px; font-size: 9.5pt; color: var(--c-text-light); }
+
+  /* === 内容区域 === */
+  .content { max-width: 100%; }
+  .chapter { padding-top: 10px; }
+
+  /* 标题 */
+  h2 { font-size: 18pt; font-weight: 700; color: var(--c-primary); border-left: 4px solid var(--c-accent); padding-left: 14px; margin: 40px 0 20px; line-height: 1.4; }
+  h3 { font-size: 13pt; font-weight: 700; color: var(--c-primary); margin: 28px 0 12px; padding-bottom: 6px; border-bottom: 1px solid var(--c-border); }
+  h4 { font-size: 11pt; font-weight: 700; color: #444; margin: 20px 0 8px; }
+
+  /* 段落 */
+  p { margin: 8px 0 12px; text-align: justify; word-wrap: break-word; }
+  strong { color: #1a1a2e; }
+
+  /* 引用 */
+  blockquote { border-left: 3px solid var(--c-accent); background: var(--c-bg-light); padding: 14px 18px; margin: 16px 0; border-radius: 0 6px 6px 0; }
+  blockquote p { color: var(--c-text-light); font-size: 10pt; margin: 4px 0; line-height: 1.7; }
+  blockquote .trans { color: #888; font-size: 9.5pt; margin-top: 8px; padding-top: 8px; border-top: 1px dashed #ddd; }
+
+  /* 提示/洞察卡片 */
+  .insight-card { border-left: 4px solid #3498db; background: #f0f7ff; padding: 14px 18px; margin: 16px 0; border-radius: 0 6px 6px 0; }
+  .insight-card.warn { border-left-color: #e67e22; background: #fdf6ec; }
+  .insight-card.danger { border-left-color: var(--c-accent-light); background: #fdf0ef; }
+  .insight-card.success { border-left-color: #27ae60; background: #f0faf4; }
+  .insight-card .card-title { font-weight: 700; font-size: 10pt; margin-bottom: 6px; }
+  .insight-card p { font-size: 10pt; margin: 4px 0; }
+
+  /* 列表 */
+  ul, ol { margin: 8px 0 12px 22px; }
+  li { margin: 4px 0; line-height: 1.7; }
+
+  /* 表格 */
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 9.5pt; }
+  thead th { background: var(--c-table-head); color: #fff; padding: 10px 12px; text-align: left; font-weight: 600; font-size: 9pt; }
+  tbody td { padding: 9px 12px; border-bottom: 1px solid var(--c-border); vertical-align: top; }
+  tbody tr:nth-child(even) { background: #fafafa; }
+  tbody tr:hover { background: #f5f5f5; }
+
+  /* 代码 */
+  code { font-family: var(--font-mono); font-size: 9pt; background: #f5f5f5; padding: 2px 5px; border-radius: 3px; color: var(--c-accent); }
+  pre { background: #f8f8f8; padding: 14px 18px; border-radius: 6px; overflow-x: auto; margin: 12px 0; border: 1px solid #eee; }
+  pre code { background: none; padding: 0; color: var(--c-text); font-size: 8.5pt; line-height: 1.6; }
+
+  /* 分隔线 */
+  hr { border: none; height: 1px; background: var(--c-border); margin: 30px 0; }
+
+  /* 数据高亮 */
+  .num { font-weight: 700; color: var(--c-accent); }
+
+  /* 版本时间线 */
+  .timeline { margin: 16px 0; }
+  .timeline-item { display: flex; margin: 10px 0; }
+  .timeline-ver { min-width: 70px; font-weight: 700; color: var(--c-primary); font-size: 10pt; }
+  .timeline-date { min-width: 120px; color: var(--c-text-light); font-size: 9pt; }
+  .timeline-desc { flex: 1; font-size: 10pt; }
+
+  /* 对比双栏 */
+  .vs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+  .vs-box { padding: 14px 16px; border-radius: 6px; border: 1px solid var(--c-border); }
+  .vs-box h4 { margin: 0 0 8px; font-size: 11pt; }
+  .vs-box p { font-size: 9.5pt; margin: 4px 0; }
+  .vs-box.left { border-left: 4px solid #3498db; }
+  .vs-box.right { border-left: 4px solid var(--c-accent); }
+
+  /* 来源表 */
+  .source-table { font-size: 8.5pt; }
+  .source-table td { padding: 6px 10px; }
+
+  /* 方法论页脚 */
+  .methodology { background: var(--c-bg-light); padding: 16px 20px; border-radius: 6px; margin-top: 30px; font-size: 9pt; color: var(--c-text-light); }
+</style>
+</head>
+<body>
+
+<!-- ===== 封面 ===== -->
+<div class="cover">
+  <div class="cover-tag">{{TAG}}</div>
+  <h1>{{TITLE}}</h1>
+  <p class="cover-sub">{{SUBTITLE}}</p>
+  <div class="cover-line"></div>
+  <div class="cover-meta">
+    <span>📅 {{DATE}}</span><br>
+    <span>🏷️ {{DOMAIN}}</span><br>
+    <span>📦 {{TYPE}}</span>
+  </div>
+  <div class="cover-footer">大管家 · 深度研究 | Powered by OpenClaw</div>
+</div>
+
+<!-- ===== 目录 ===== -->
+<div class="toc-page">
+  <h2>目录</h2>
+  <ul class="toc-list">
+    {{TOC_ITEMS}}
+  </ul>
+</div>
+
+<!-- ===== 正文 ===== -->
+<div class="content">
+  {{BODY}}
+</div>
+
+</body>
+</html>
